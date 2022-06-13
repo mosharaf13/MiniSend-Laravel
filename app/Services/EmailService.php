@@ -3,13 +3,14 @@
 namespace App\Services;
 
 use App\Contracts\EmailHandler;
-use App\Models\Email;
+use App\Jobs\EmailJob;
+use App\Models\EmailRequest;
 
 class EmailService
 {
-    public function send(Email $email, EmailHandler $emailHandler)
+    public function send(EmailRequest $emailRequest, EmailHandler $emailHandler)
     {
-        $emailHandler->storeEmailInfoWithPostedStatus($email);
-        $emailHandler->send($email);
+        $emailIdInStorage = $emailHandler->storeInfoWithPostedStatus($emailRequest);
+        EmailJob::dispatch($emailRequest, $emailIdInStorage, $emailHandler);
     }
 }

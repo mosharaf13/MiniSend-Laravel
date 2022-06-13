@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Http\Request;
 
-class Email
+class EmailRequest
 {
     private string $from;
     private string $to;
