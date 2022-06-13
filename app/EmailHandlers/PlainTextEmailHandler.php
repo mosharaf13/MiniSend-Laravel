@@ -3,29 +3,44 @@
 namespace App\EmailHandlers;
 
 use App\Contracts\EmailHandler;
-use App\Mail\PlainTextEmail;
-use App\Models\Email;
+use App\Jobs\EmailJob;
 use App\Models\Eloquent\Email as EloquentEmail;
-use Illuminate\Support\Facades\Mail;
+use App\Models\EmailRequest;
 
 class PlainTextEmailHandler implements EmailHandler
 {
-    public function send(Email $email)
+    /**
+     * @param EmailRequest $email
+     * @return int
+     */
+    public function storeInfoWithPostedStatus(EmailRequest $email): int
     {
-        Mail::to($email->getTo())->send(
-            new PlainTextEmail($email)
-        );
-    }
-
-    public function storeEmailInfoWithPostedStatus(Email $email)
-    {
-        EloquentEmail::create([
+        $email = EloquentEmail::create([
             'from' => $email->getFrom(),
             'to' => $email->getTo(),
             'subject' => $email->getSubject(),
             'body' => $email->getBody(),
             'status' => EloquentEmail::STATUS_POSTED
         ]);
+
+        return $email->id;
     }
+
+    /**
+     * @param int $emailIdInStorage
+     */
+    public function changeStatusToSent(int $emailIdInStorage)
+    {
+        EloquentEmail::where('id', $emailIdInStorage)->update(['status' => EloquentEmail::STATUS_SENT]);
+    }
+
+    /**
+     * @param int $emailIdInStorage
+     */
+    public function changeStatusToFailed(int $emailIdInStorage)
+    {
+        EloquentEmail::where('id', $emailIdInStorage)->update(['status' => EloquentEmail::STATUS_FAILED]);
+    }
+
 
 }

@@ -2,11 +2,13 @@
 
 namespace App\Contracts;
 
-use App\Models\Email;
+use App\Models\EmailRequest;
 
 interface EmailHandler
 {
-    public function send(Email $email);
+    public function storeInfoWithPostedStatus(EmailRequest $email): int;
 
-    public function storeEmailInfoWithPostedStatus(Email $email);
+    public function changeStatusToSent(int $emailIdInStorage);
+
+    public function changeStatusToFailed(int $emailIdInStorage);
 }

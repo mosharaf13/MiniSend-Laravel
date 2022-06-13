@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use App\Models\Email;
+use App\Models\EmailRequest;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -12,9 +12,9 @@ class PlainTextEmail extends Mailable
     use Queueable, SerializesModels;
 
     /**
-     * @param Email $email
+     * @param EmailRequest $email
      */
-    public function __construct(public Email $email)
+    public function __construct(public EmailRequest $email)
     {
     }
 
