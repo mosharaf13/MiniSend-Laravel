@@ -1,1 +1,1 @@
-{{ $request['body'] }}
+{{ $email->getBody() }}
