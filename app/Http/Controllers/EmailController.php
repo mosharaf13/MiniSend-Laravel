@@ -2,14 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Contracts\EmailHandler;
+use App\EmailHandlers\PlainTextEmailHandler;
 use App\Http\Requests\EmailSendRequest;
-use App\Mail\PlainTextEmail;
+use App\Models\Email;
+use App\Services\EmailService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Mail;
 
 class EmailController extends Controller
 {
+    public function __construct(public EmailService $emailService, public PlainTextEmailHandler $plainTextEmailHandler)
+    {
+
+    }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -26,9 +33,7 @@ class EmailController extends Controller
      */
     public function send(EmailSendRequest $request)
     {
-        Mail::to($request->get('to'))->send(
-            new PlainTextEmail($request)
-        );
+        $this->emailService->send(new Email($request), $this->plainTextEmailHandler);
 
         return response()->json("Mail posted Successfully");
     }

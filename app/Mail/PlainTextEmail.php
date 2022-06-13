@@ -2,8 +2,8 @@
 
 namespace App\Mail;
 
+use App\Models\Email;
 use Illuminate\Bus\Queueable;
-use Illuminate\Http\Request;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
@@ -12,11 +12,10 @@ class PlainTextEmail extends Mailable
     use Queueable, SerializesModels;
 
     /**
-     * @param Request $request
+     * @param Email $email
      */
-    public function __construct(public Request $request)
+    public function __construct(public Email $email)
     {
-
     }
 
     /**
@@ -26,9 +25,9 @@ class PlainTextEmail extends Mailable
      */
     public function build()
     {
-        return $this->subject($this->request->get('subject'))
-            ->to($this->request->get('to'))
-            ->from($this->request->get('from'))
+        return $this->subject($this->email->getSubject())
+            ->to($this->email->getTo())
+            ->from($this->email->getTo())
             ->text('emails.plain_text');
     }
 }

@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Mail\PlainTextEmail;
+use App\Models\Email;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use PHPUnit\Framework\TestCase;
@@ -22,7 +23,8 @@ class PlainTextEmailTest extends TestCase
             'subject' => 'sample subject',
             'body' => 'sample body'
         ]);
-        Mail::to($request->get('to'))->send(new PlainTextEmail($request));
+        $email = new Email($request);
+        Mail::to($request->get('to'))->send(new PlainTextEmail($email));
 
         Mail::assertSent(PlainTextEmail::class);
         Mail::assertSent(PlainTextEmail::class, function ($mail) {
