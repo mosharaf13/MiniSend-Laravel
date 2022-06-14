@@ -6,9 +6,7 @@ use App\Models\EmailRequest;
 
 interface EmailHandler
 {
-    public function storeInfoWithPostedStatus(EmailRequest $email): int;
+    public function sanitizeEmailRequest(EmailRequest $emailRequest): EmailRequest;
 
-    public function changeStatusToSent(int $emailIdInStorage);
-
-    public function changeStatusToFailed(int $emailIdInStorage);
+    public function send(EmailRequest $emailRequest);
 }

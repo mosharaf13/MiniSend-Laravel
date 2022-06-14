@@ -46,11 +46,27 @@ class EmailRequest
     }
 
     /**
+     * @param string $subject
+     */
+    public function setSubject(string $subject): void
+    {
+        $this->subject = $subject;
+    }
+
+    /**
      * @return string
      */
     public function getBody(): string
     {
         return $this->body;
+    }
+
+    /**
+     * @param string $body
+     */
+    public function setBody(string $body)
+    {
+        $this->body = $body;
     }
 
     /**
