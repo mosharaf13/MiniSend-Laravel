@@ -7,12 +7,14 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class PlainTextEmail extends Mailable
+class HtmlTemplateEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
     /**
-     * @param EmailRequest $emailRequest
+     * Create a new message instance.
+     *
+     * @return void
      */
     public function __construct(public EmailRequest $emailRequest)
     {
@@ -25,11 +27,9 @@ class PlainTextEmail extends Mailable
      */
     public function build()
     {
-        return $this->subject($this->emailRequest->getSubject())
-            ->to($this->emailRequest->getTo())
+        return $this->to($this->emailRequest->getTo())
             ->from($this->emailRequest->getFrom())
-            ->markdown('emails.plain_text', [
-                'body' => $this->emailRequest->getBody()
-            ]);
+            ->subject($this->emailRequest->getSubject())
+            ->html($this->emailRequest->getBody());
     }
 }
