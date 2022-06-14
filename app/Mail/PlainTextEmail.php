@@ -27,7 +27,7 @@ class PlainTextEmail extends Mailable
     {
         return $this->subject($this->email->getSubject())
             ->to($this->email->getTo())
-            ->from($this->email->getTo())
+            ->from($this->email->getFrom())
             ->text('emails.plain_text');
     }
 }

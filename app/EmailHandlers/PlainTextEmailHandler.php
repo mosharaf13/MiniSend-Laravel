@@ -3,7 +3,6 @@
 namespace App\EmailHandlers;
 
 use App\Contracts\EmailHandler;
-use App\Jobs\EmailJob;
 use App\Models\Eloquent\Email as EloquentEmail;
 use App\Models\EmailRequest;
 
@@ -40,6 +39,22 @@ class PlainTextEmailHandler implements EmailHandler
     public function changeStatusToFailed(int $emailIdInStorage)
     {
         EloquentEmail::where('id', $emailIdInStorage)->update(['status' => EloquentEmail::STATUS_FAILED]);
+    }
+
+    /**
+     * @param EmailRequest $emailRequest
+     * @return EmailRequest
+     */
+    public function sanitizeEmailRequest(EmailRequest $emailRequest): EmailRequest
+    {
+        $emailRequest->setSubject(
+            trim(htmlspecialchars($emailRequest->getSubject()))
+        );
+        $emailRequest->setBody(
+            trim(htmlspecialchars($emailRequest->getBody()))
+        );
+
+        return $emailRequest;
     }
 
 

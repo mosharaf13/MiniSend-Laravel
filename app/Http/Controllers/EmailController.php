@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Contracts\EmailHandler;
 use App\EmailHandlers\PlainTextEmailHandler;
 use App\Http\Requests\EmailSendRequest;
+use App\Models\Eloquent\Email;
 use App\Models\EmailRequest;
 use App\Services\EmailService;
 use Illuminate\Http\JsonResponse;
@@ -13,18 +13,15 @@ class EmailController extends Controller
 {
     public function __construct(public EmailService $emailService, public PlainTextEmailHandler $plainTextEmailHandler)
     {
-
     }
 
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
     public function index()
     {
-        //
+        return response()->json(Email::paginate());
     }
 
     /**

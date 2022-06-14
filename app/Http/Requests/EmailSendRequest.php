@@ -26,8 +26,8 @@ class EmailSendRequest extends FormRequest
         return [
             'from' => 'required|email',
             'to' => 'required|email',
-            'subject' => 'required|max:998',
-            'body' => 'required'
+            'subject' => 'required|string|max:998',
+            'body' => 'required|string'
         ];
     }
 }
