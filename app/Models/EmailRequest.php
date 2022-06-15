@@ -2,24 +2,27 @@
 
 namespace App\Models;
 
-use App\Exceptions\MultiTypeBodyNotAllowedException;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
 class EmailRequest
 {
-    private string $from;
-    private string $to;
-    private string $subject;
-    private string $body;
-    private array $attachments = [];
+    protected string $from;
+    protected string $to;
+    protected string $subject;
+    protected string $body;
+    protected array $attachments = [];
+    protected string $bodyType;
+
+    const BODY_TYPE_TEXT = 'text';
+    const BODY_TYPE_HTML = 'html';
 
     public function __construct(Request $request)
     {
         $this->from = $request->get('from');
         $this->to = $request->get('to');
         $this->subject = $request->get('subject');
-        $this->body = $this->buildBody($request->get('text_content'), $request->get('html_content'));
+        $this->body = $this->buildBody($request->get('text_content', ''), $request->get('html_content', ''));
         $this->attachments = $request->get('attachments', []);
     }
 
@@ -39,9 +42,19 @@ class EmailRequest
             ]);
         }
         if (!empty($textContent)) {
+            $this->bodyType = self::BODY_TYPE_TEXT;
             return $textContent;
         }
+        $this->bodyType = self::BODY_TYPE_HTML;
         return $htmlContent;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBodyType(): string
+    {
+        return $this->bodyType;
     }
 
     /**

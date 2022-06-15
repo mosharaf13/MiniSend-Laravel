@@ -10,6 +10,7 @@ use App\Models\Eloquent\Email;
 use App\Models\EmailRequest;
 use App\Services\EmailService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\App;
 
 class EmailController extends Controller
 {
@@ -45,12 +46,21 @@ class EmailController extends Controller
      */
     public function send(EmailSendRequest $request)
     {
+        $request = new EmailRequest($request);
         $this->emailService->send(
-            new EmailRequest($request),
-            $this->plainTextEmailHandler,
+            $request,
+            $this->getEmailHandler($request),
             $this->eloquentBasedDbStorage
         );
 
         return response()->json("Mail posted Successfully");
+    }
+
+    private function getEmailHandler(EmailRequest $request)
+    {
+        if ($request->getBodyType() == EmailRequest::BODY_TYPE_TEXT) {
+            return App::make(PlainTextEmailHandler::class);
+        }
+        return App::make(HtmlTemplateEmailHandler::class);
     }
 }
