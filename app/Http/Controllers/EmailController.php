@@ -18,8 +18,7 @@ class EmailController extends Controller
         public PlainTextEmailHandler $plainTextEmailHandler,
         public HtmlTemplateEmailHandler $htmlTemplateEmailHandler,
         public EloquentBasedDbStorage $eloquentBasedDbStorage
-    )
-    {
+    ) {
     }
 
 
@@ -28,7 +27,16 @@ class EmailController extends Controller
      */
     public function index()
     {
-        return response()->json(Email::paginate());
+        return response()->json(Email::orderBy('created_at', 'desc')->paginate());
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function show($id)
+    {
+        return response()->json(Email::findOrFail($id));
     }
 
     /**

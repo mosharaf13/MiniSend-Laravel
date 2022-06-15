@@ -17,7 +17,7 @@ class HtmlTemplateEmailHandler implements EmailHandler
     {
         $htmlSanitizer = $this->createHtmlSanitizer();
         $emailRequest->setBody(
-            $htmlSanitizer->sanitize($emailRequest->getBody())
+            nl2br($htmlSanitizer->sanitize($emailRequest->getBody()))
         );
 
         return $emailRequest;

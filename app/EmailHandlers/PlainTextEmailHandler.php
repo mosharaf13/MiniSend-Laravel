@@ -3,7 +3,6 @@
 namespace App\EmailHandlers;
 
 use App\Contracts\EmailHandler;
-use App\Contracts\EmailStorage;
 use App\Mail\PlainTextEmail;
 use App\Models\EmailRequest;
 use Illuminate\Support\Facades\Mail;
@@ -18,7 +17,7 @@ class PlainTextEmailHandler implements EmailHandler
     public function sanitizeEmailRequest(EmailRequest $emailRequest): EmailRequest
     {
         $emailRequest->setBody(
-            trim(htmlspecialchars($emailRequest->getBody()))
+            nl2br(trim(htmlspecialchars($emailRequest->getBody())))
         );
 
         return $emailRequest;
