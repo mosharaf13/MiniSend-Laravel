@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Exceptions\MultiTypeBodyNotAllowedException;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class EmailRequest
 {
@@ -17,8 +19,29 @@ class EmailRequest
         $this->from = $request->get('from');
         $this->to = $request->get('to');
         $this->subject = $request->get('subject');
-        $this->body = $request->get('body');
+        $this->body = $this->buildBody($request->get('text_content'), $request->get('html_content'));
         $this->attachments = $request->get('attachments', []);
+    }
+
+    /**
+     * @param string $textContent
+     * @param string $htmlContent
+     * @return string
+     * @throws ValidationException
+     */
+    private function buildBody(string $textContent, string $htmlContent)
+    {
+        if (!empty($textContent) && !empty($htmlContent)) {
+            $message = 'Both text and html content are not allowed. please provide either text or html content';
+            throw ValidationException::withMessages([
+                'text_content' => $message,
+                'html_content' => $message
+            ]);
+        }
+        if (!empty($textContent)) {
+            return $textContent;
+        }
+        return $htmlContent;
     }
 
     /**
