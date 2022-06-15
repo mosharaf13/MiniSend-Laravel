@@ -14,13 +14,18 @@ interface EmailStorage
     public function storeInfoWithPostedStatus(EmailRequest $email): int;
 
     /**
-     * @param int $emailIdInStorage
+     * @param $emailIdInStorage
      * @return mixed
      */
-    public function changeStatusToSent(int $emailIdInStorage): void;
+    public function changeStatusToSent($emailIdInStorage): void;
 
     /**
-     * @param int $emailIdInStorage
+     * @param $emailIdInStorage
      */
-    public function changeStatusToFailed(int $emailIdInStorage): void;
+    public function changeStatusToFailed($emailIdInStorage): void;
+
+    /**
+     * @param array $attachmentsMeta
+     */
+    public function saveAttachmentMeta(array $attachmentsMeta, $emailIdInStorage): void;
 }

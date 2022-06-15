@@ -23,7 +23,7 @@ class EmailRequest
         $this->to = $request->get('to');
         $this->subject = $request->get('subject');
         $this->body = $this->buildBody($request->get('text_content', ''), $request->get('html_content', ''));
-        $this->attachments = $request->get('attachments', []);
+        $this->attachments = $request->file('attachments', []);
     }
 
     /**
@@ -111,6 +111,14 @@ class EmailRequest
     public function getAttachments(): array
     {
         return $this->attachments;
+    }
+
+    /**
+     * @param array $attachments
+     */
+    public function setAttachments(array $attachments = []): void
+    {
+        $this->attachments = $attachments;
     }
 
 
