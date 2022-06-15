@@ -29,6 +29,8 @@ class EmailSendRequest extends FormRequest
             'subject' => 'required|string|max:998',
             'text_content' => 'required_without:html_content|string',
             'html_content' => 'required_without:text_content|string',
+            'attachments' => 'nullable',
+            'attachments.*' => 'mimes:jpeg,jpg,png,pdf,csv,xls,xlsx,doc,docx|max:2048'
         ];
     }
 }

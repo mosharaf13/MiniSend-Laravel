@@ -2,9 +2,9 @@
 
 namespace App\Jobs;
 
+use App\Contracts\AttachmentStorage;
 use App\Contracts\EmailHandler;
 use App\Contracts\EmailStorage;
-use App\Mail\PlainTextEmail;
 use App\Models\EmailRequest;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -12,7 +12,6 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 
 class EmailJob implements ShouldQueue
 {
@@ -27,7 +26,7 @@ class EmailJob implements ShouldQueue
         public EmailRequest $emailRequest,
         public int $emailIdInStorage,
         public EmailHandler $emailHandler,
-        public EmailStorage $emailStorage
+        public EmailStorage $emailStorage,
     ) {
         $this->connection = 'redis';
     }
@@ -43,9 +42,12 @@ class EmailJob implements ShouldQueue
         $this->emailStorage->changeStatusToSent($this->emailIdInStorage);
     }
 
+
     public function failed()
     {
         $this->emailStorage->changeStatusToFailed($this->emailIdInStorage);
-        Log::error("Couldn't send email from " . $this->emailRequest->getFrom() . " to " . $this->emailRequest->getTo());
+        Log::error(
+            "Couldn't send email from " . $this->emailRequest->getFrom() . " to " . $this->emailRequest->getTo()
+        );
     }
 }
