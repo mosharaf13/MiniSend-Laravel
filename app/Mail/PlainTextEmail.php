@@ -28,8 +28,8 @@ class PlainTextEmail extends Mailable
         return $this->subject($this->emailRequest->getSubject())
             ->to($this->emailRequest->getTo())
             ->from($this->emailRequest->getFrom())
-            ->markdown('emails.plain_text', [
-                'body' => $this->emailRequest->getBody()
+            ->text('emails.plain_text', [
+                'body' => htmlspecialchars_decode($this->emailRequest->getBody())
             ]);
     }
 }
