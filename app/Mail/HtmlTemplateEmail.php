@@ -2,10 +2,12 @@
 
 namespace App\Mail;
 
+use App\Models\AttachmentMeta;
 use App\Models\EmailRequest;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Storage;
 
 class HtmlTemplateEmail extends Mailable
 {
@@ -27,9 +29,22 @@ class HtmlTemplateEmail extends Mailable
      */
     public function build()
     {
-        return $this->to($this->emailRequest->getTo())
+        $mailable = $this->to($this->emailRequest->getTo())
             ->from($this->emailRequest->getFrom())
             ->subject($this->emailRequest->getSubject())
             ->html($this->emailRequest->getBody());
+
+        /**
+         * @var AttachmentMeta $attachment
+         */
+        foreach ($this->emailRequest->getAttachments() as $attachment) {
+            $mailable->attach(
+                Storage::disk('public')->path($attachment->getPath()),
+                [
+                    'as' => $attachment->getOriginalName()
+                ]
+            );
+        }
+        return $mailable;
     }
 }
