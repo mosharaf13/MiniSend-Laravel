@@ -27,7 +27,8 @@ class EmailSendRequest extends FormRequest
             'from' => 'required|email',
             'to' => 'required|email',
             'subject' => 'required|string|max:998',
-            'body' => 'required|string'
+            'text_content' => 'required_without:html_content|string',
+            'html_content' => 'required_without:text_content|string',
         ];
     }
 }
