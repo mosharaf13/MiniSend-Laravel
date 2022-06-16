@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Exceptions\BothTextAndHtmlBodyNotAllowedException;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 
 class EmailRequest
 {
@@ -103,7 +104,7 @@ class EmailRequest
     }
 
     /**
-     * @param array $attachments
+     * @param UploadedFile[] | AttachmentMeta[] $attachments
      */
     public function setAttachments(array $attachments = []): void
     {
