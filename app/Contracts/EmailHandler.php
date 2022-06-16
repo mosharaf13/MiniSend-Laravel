@@ -8,5 +8,5 @@ interface EmailHandler
 {
     public function sanitizeEmailRequest(EmailRequest $emailRequest): EmailRequest;
 
-    public function send(EmailRequest $emailRequest);
+    public function send(EmailRequest $emailRequest): void;
 }

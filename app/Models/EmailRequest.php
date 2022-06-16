@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
+use App\Exceptions\BothTextAndHtmlBodyNotAllowedException;
 use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
+use Illuminate\Http\UploadedFile;
 
 class EmailRequest
 {
@@ -22,24 +23,21 @@ class EmailRequest
         $this->from = $request->get('from');
         $this->to = $request->get('to');
         $this->subject = $request->get('subject');
-        $this->body = $this->buildBody($request->get('text_content', ''), $request->get('html_content', ''));
+        $this->body = $this->buildBody($request->get('text_content'), $request->get('html_content'));
         $this->attachments = $request->file('attachments', []);
     }
 
     /**
-     * @param string $textContent
-     * @param string $htmlContent
-     * @return string
-     * @throws ValidationException
+     * @param string|null $textContent
+     * @param string|null $htmlContent
+     * @return string|null
+     * @throws BothTextAndHtmlBodyNotAllowedException
      */
-    private function buildBody(string $textContent, string $htmlContent)
+    private function buildBody(?string $textContent, ?string $htmlContent)
     {
         if (!empty($textContent) && !empty($htmlContent)) {
             $message = 'Both text and html content are not allowed. please provide either text or html content';
-            throw ValidationException::withMessages([
-                'text_content' => $message,
-                'html_content' => $message
-            ]);
+            throw new BothTextAndHtmlBodyNotAllowedException($message);
         }
         if (!empty($textContent)) {
             $this->bodyType = self::BODY_TYPE_TEXT;
@@ -82,14 +80,6 @@ class EmailRequest
     }
 
     /**
-     * @param string $subject
-     */
-    public function setSubject(string $subject): void
-    {
-        $this->subject = $subject;
-    }
-
-    /**
      * @return string
      */
     public function getBody(): string
@@ -114,7 +104,7 @@ class EmailRequest
     }
 
     /**
-     * @param array $attachments
+     * @param UploadedFile[] | AttachmentMeta[] $attachments
      */
     public function setAttachments(array $attachments = []): void
     {

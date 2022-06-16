@@ -2,7 +2,6 @@
 
 namespace App\Jobs;
 
-use App\Contracts\AttachmentStorage;
 use App\Contracts\EmailHandler;
 use App\Contracts\EmailStorage;
 use App\Models\EmailRequest;
@@ -28,7 +27,7 @@ class EmailJob implements ShouldQueue
         public EmailHandler $emailHandler,
         public EmailStorage $emailStorage,
     ) {
-        $this->connection = 'redis';
+
     }
 
     /**

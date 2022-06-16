@@ -23,7 +23,10 @@ class PlainTextEmailHandler implements EmailHandler
         return $emailRequest;
     }
 
-    public function send(EmailRequest $emailRequest)
+    /**
+     * @param EmailRequest $emailRequest
+     */
+    public function send(EmailRequest $emailRequest):void
     {
         Mail::to($emailRequest->getTo())->send(
             new PlainTextEmail($emailRequest)

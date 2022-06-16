@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\EmailHandlers;
 
 use App\EmailHandlers\PlainTextEmailHandler;
 use App\Mail\PlainTextEmail;
 use App\Models\EmailRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class PlainTextEmailHandlerTest extends TestCase
 {
@@ -22,16 +22,13 @@ class PlainTextEmailHandlerTest extends TestCase
             'from' => 'samplefrom@demo.com',
             'to' => 'sampleto@demo.com',
             'subject' => 'sample subject',
-            'body' => 'sample body'
+            'text_content' => 'sample body'
         ]);
         $this->emailRequest = new EmailRequest($this->request);
         $this->plainTextEmailHandler = new PlainTextEmailHandler();
     }
 
-    /**
-     * @test
-     */
-    public function plain_text_emails_can_be_sent()
+    public function test_plain_text_emails_can_be_sent()
     {
         Mail::fake();
 
@@ -44,10 +41,9 @@ class PlainTextEmailHandlerTest extends TestCase
     }
 
     /**
-     * @test
      * @dataProvider plainTextEmailBodyProvider
      */
-    public function sanitizes_mail_body(string $input, string $expected)
+    public function test_sanitizes_mail_body(string $input, string $expected)
     {
         $emailRequest = new EmailRequest($this->request);
         $emailRequest->setBody($input);

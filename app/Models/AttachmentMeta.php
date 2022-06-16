@@ -34,5 +34,4 @@ class AttachmentMeta
         return $this->extension;
     }
 
-
 }

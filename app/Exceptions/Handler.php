@@ -47,4 +47,28 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
+    public function render($request, Throwable $e)
+    {
+        if ($request->wantsJson()) {
+            $response = [
+                'message' => $e->getMessage()
+            ];
+
+            // If the app is in debug mode
+            if (config('app.debug')) {
+                $response['exception'] = get_class($e);
+                $response['message'] = $e->getMessage();
+                $response['trace'] = $e->getTrace();
+            }
+            $status = 400;
+
+            if ($this->isHttpException($e)) {
+                $status = $e->getStatusCode();
+            }
+            return response()->json($response, $status);
+        }
+
+        return parent::render($request, $e);
+    }
 }
