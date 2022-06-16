@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\EmailHandlers;
 use App\EmailHandlers\HtmlTemplateEmailHandler;
 use App\Mail\HtmlTemplateEmail;
 use App\Models\EmailRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class HtmlTemplateEmailHandlerTest extends TestCase
 {

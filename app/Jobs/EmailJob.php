@@ -2,7 +2,6 @@
 
 namespace App\Jobs;
 
-use App\Contracts\AttachmentStorage;
 use App\Contracts\EmailHandler;
 use App\Contracts\EmailStorage;
 use App\Models\EmailRequest;

@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\EmailHandlers;
 
 use App\EmailHandlers\PlainTextEmailHandler;
 use App\Mail\PlainTextEmail;
 use App\Models\EmailRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class PlainTextEmailHandlerTest extends TestCase
 {
