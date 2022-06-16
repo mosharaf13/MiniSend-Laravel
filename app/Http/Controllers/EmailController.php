@@ -37,12 +37,12 @@ class EmailController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Email::select('id', 'from', 'to', 'subject', 'created_at', 'status');
+        $query = Email::select('id', 'from', 'to', 'subject', 'updated_at', 'status');
 
         $this->getFilterAppliedQuery($query, $request);
         return response()->json(
             $query->orderBy(
-                'created_at',
+                'updated_at',
                 'desc'
             )->paginate()
         );
