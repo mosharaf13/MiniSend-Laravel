@@ -18,4 +18,9 @@ class Email extends Model
         'updated_at' => 'datetime:Y-m-d h:i a'
     ];
 
+    public function emailAttachments()
+    {
+        return $this->hasMany(EmailAttachment::class);
+    }
+
 }

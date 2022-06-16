@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\AttachmentStorage;
 use App\EmailHandlers\HtmlTemplateEmailHandler;
 use App\EmailHandlers\PlainTextEmailHandler;
 use App\EmailStorages\EloquentBasedDbStorage;
 use App\Http\Requests\EmailSendRequest;
 use App\Models\Eloquent\Email;
+use App\Models\Eloquent\EmailAttachment;
 use App\Models\EmailRequest;
 use App\Services\EmailService;
 use Illuminate\Database\Eloquent\Builder;
@@ -22,7 +24,8 @@ class EmailController extends Controller
         public EmailService $emailService,
         public PlainTextEmailHandler $plainTextEmailHandler,
         public HtmlTemplateEmailHandler $htmlTemplateEmailHandler,
-        public EloquentBasedDbStorage $eloquentBasedDbStorage
+        public EloquentBasedDbStorage $eloquentBasedDbStorage,
+
     ) {
         $this->filterTypeToDbKeyMap = ['sender' => 'from', 'recipient' => 'to', 'subject' => 'subject'];
     }
@@ -87,7 +90,7 @@ class EmailController extends Controller
      */
     public function show($id)
     {
-        return response()->json(Email::findOrFail($id));
+        return response()->json(Email::with('emailAttachments')->findOrFail($id));
     }
 
     /**
@@ -113,4 +116,5 @@ class EmailController extends Controller
         }
         return App::make(HtmlTemplateEmailHandler::class);
     }
+
 }
