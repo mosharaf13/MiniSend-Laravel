@@ -28,7 +28,7 @@ class EmailJob implements ShouldQueue
         public EmailHandler $emailHandler,
         public EmailStorage $emailStorage,
     ) {
-        $this->connection = 'redis';
+
     }
 
     /**
