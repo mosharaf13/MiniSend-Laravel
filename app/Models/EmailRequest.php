@@ -79,14 +79,6 @@ class EmailRequest
     }
 
     /**
-     * @param string $subject
-     */
-    public function setSubject(string $subject): void
-    {
-        $this->subject = $subject;
-    }
-
-    /**
      * @return string
      */
     public function getBody(): string
