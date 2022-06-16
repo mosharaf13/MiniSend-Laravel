@@ -24,4 +24,6 @@ Route::get('email', [EmailController::class, 'index']);
 Route::get('email/{id}', [EmailController::class, 'show']);
 Route::post('email', [EmailController::class, 'send']);
 
+Route::get('email/status/statistics', [EmailController::class, 'getStatistics']);
+
 
