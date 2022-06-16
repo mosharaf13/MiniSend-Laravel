@@ -44,3 +44,8 @@ The project should be up and running now.
         "html_content": "<b>sample text content</b>"
     }
 
+##Thoughts
+
+During filtering on `GET /email` api I have used wildcard which is relatively slower and impractical on a production 
+environment with large dataset. In that scenario we can make use of full text search engines like elasticsearch 
+or algolia to make queries faster and still provide user's convenience to search on partial text.
