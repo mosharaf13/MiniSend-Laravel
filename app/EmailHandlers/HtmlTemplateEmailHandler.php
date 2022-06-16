@@ -34,7 +34,10 @@ class HtmlTemplateEmailHandler implements EmailHandler
         );
     }
 
-    public function send(EmailRequest $emailRequest)
+    /**
+     * @param EmailRequest $emailRequest
+     */
+    public function send(EmailRequest $emailRequest): void
     {
         Mail::to($emailRequest->getTo())->send(
             new HtmlTemplateEmail($emailRequest)
