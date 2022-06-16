@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AttachmentController;
 use App\Http\Controllers\EmailController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -23,5 +24,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('email', [EmailController::class, 'index']);
 Route::get('email/{id}', [EmailController::class, 'show']);
 Route::post('email', [EmailController::class, 'send']);
+
+Route::get('email/status/statistics', [EmailController::class, 'getStatistics']);
+
+Route::get('email/attachment/download/{attachmentId}', [AttachmentController::class, 'downloadAttachment']);
 
 
