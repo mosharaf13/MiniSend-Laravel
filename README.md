@@ -18,9 +18,10 @@ Sample Mail Configuration in .env
 Now go ahead and run below commands
 
     composer update
-    ./vendor/bin/sail up -d 
-    ./vendor/bin/sail aritsan key:generate
-    ./vendor/bin/sail aritsan storage:link
+    ./vendor/bin/sail up 
+    ./vendor/bin/sail artisan key:generate
+    ./vendor/bin/sail artisan migrate
+    ./vendor/bin/sail artisan storage:link
 
 The project should be up and running now.
 
@@ -44,6 +45,14 @@ The project should be up and running now.
         "html_content": "<b>sample text content</b>"
     }
 
+By default emails are sent synchronously. If you would like to use queued jobs then set below key in `.env`
+
+    QUEUE_CONNECTION=redis
+
+And run
+
+    ./vendor/bin/sail artisan horizon
+    
 ##Thoughts
 
 During filtering on `GET /email` api I have used wildcard which is relatively slower and impractical on a production 
