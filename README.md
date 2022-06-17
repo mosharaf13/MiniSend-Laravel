@@ -55,7 +55,9 @@ And run
 
 ### Running Tests
    
-   ./vendor/bin/sail artisan test
+
+    ./vendor/bin/sail artisan test
+
     
 ##Thoughts
 
