@@ -52,6 +52,10 @@ By default emails are sent synchronously. If you would like to use queued jobs t
 And run
 
     ./vendor/bin/sail artisan horizon
+
+### Running Tests
+   
+   ./vendor/bin/sail artisan test
     
 ##Thoughts
 
